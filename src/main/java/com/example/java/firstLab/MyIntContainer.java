@@ -53,13 +53,18 @@ public class MyIntContainer {
      * @param index заданному индексу
      */
     public int get(int index) {
-        return elements[index];
+        if (isInRange(index)) {
+            return elements[index];
+        }
+        else {
+            throw new IndexOutOfBoundsException("Вы вышли за пределы контейнера.");
+        }
     }
 
 
     /**
      * Метод, который удаляет элемент по
-     * @param index заданному индексу
+     * @param index заданному индексу, оставляя 0 на пустых местах
      */
     public void remove(int index) {
         System.arraycopy(elements, index + 1, elements, index, size - index - 1);
