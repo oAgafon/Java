@@ -1,7 +1,5 @@
 package com.example.java.secondLab;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,84 +170,75 @@ public class Converter {
 
     /**
      * Метод проверяющий выражение на корректность для вычисления (без учета порядка скобок)
-     * @return сообщение об ошибке, в случае проблем; пустую строку - в случае корректности
+     * если сообщение некорректно - бросает исключение
      */
-    @NotNull
-    private String getErrorMessageIfLogicBroken() {
+    private void throwIfLogicBroken() {
         String availableSigns = "+-*/^";
 
         if (availableSigns.indexOf(formula[0]) != -1) {
-            return "String must be started with number/variables or bracket";
+            throw new ConverterException.FormulaStartException();
         }
 
         if (availableSigns.indexOf(formula[formula.length - 1]) != -1) {
-            return "String must not ended on sign";
+            throw new ConverterException.FormulaEndException();
         }
 
 
-        return getMessageIfNeighboringCharactersNotComparable(availableSigns);
+        throwIfNeighboringCharactersNotComparable(availableSigns);
     }
 
 
     /**
-     * Метод проверяющий выражение на корректность для вычисления два соседних элемента
-     * @return если есть нарушения - сообщение об ошибке, иначе - пустую строку
+     * Метод проверяющий на корректность для вычисления два соседних элемента
+     * если они некорректны - бросает исключение
      */
-    private String getMessageIfNeighboringCharactersNotComparable (String availableSigns) {
+    private void throwIfNeighboringCharactersNotComparable (String availableSigns) {
         for (int i = 0; i < formula.length - 1; i++) {
             char currentChar = formula[i];
             char nextChar = formula[i + 1];
 
             if (Character.isLetter(currentChar) && Character.isLetter(nextChar)) {
-                return "Variable must be represented by a single letter";
+                throw new ConverterException.VariableMustBeSingleLetterException();
             }
 
             if (Character.isLetter(currentChar) && !availableSigns.contains(String.valueOf(nextChar)) && nextChar != ')') {
-                return "After a variable, there must be a sign";
+                throw new ConverterException.AfterVariableException();
             }
 
             if (Character.isDigit(currentChar) && !Character.isDigit(nextChar) && !availableSigns.contains(String.valueOf(nextChar)) && nextChar != ')') {
-                return "After a number, there must be a sign or another number";
-            }
-
-            if (currentChar == '(' && !(nextChar == '(' || Character.isDigit(nextChar) || Character.isLetter(nextChar))) {
-                return "After an open bracket, there must be another bracket or a number/variable";
-            }
-
-            if (currentChar == ')' && !(nextChar == '(' || nextChar == ')' || availableSigns.contains(String.valueOf(nextChar)))) {
-                return "After a closing bracket, there must be another bracket or a sign";
-            }
-
-            if (availableSigns.contains(String.valueOf(currentChar)) && availableSigns.contains(String.valueOf(nextChar))) {
-                return "There must not be two signs in a row";
+                throw new ConverterException.AfterNumberException();
             }
 
             if (currentChar == '(' && nextChar == ')') {
-                return "There must not be empty brackets";
+                throw new ConverterException.EmptyBracketsException();
             }
 
-            if (availableSigns.contains(String.valueOf(currentChar)) && nextChar == ')') {
-                return "After a sign, there must be a number/variable or an open bracket";
+            if (currentChar == '(' && !(nextChar == '(' || Character.isDigit(nextChar) || Character.isLetter(nextChar))) {
+                throw new ConverterException.AfterOpenBracketException();
+            }
+
+            if (currentChar == ')' && !(nextChar == '(' || nextChar == ')' || availableSigns.contains(String.valueOf(nextChar)))) {
+                throw new ConverterException.AfterClosingBracketException();
+            }
+
+            if (availableSigns.contains(String.valueOf(currentChar)) && availableSigns.contains(String.valueOf(nextChar))) {
+                throw new ConverterException.TwoSignsInARowException();
             }
         }
 
-        return "";
     }
 
 
     /**
      * Метод проверяющий логику выражения
-     * в случае нарушений бросает RuntimeException с соответствующим сообщением
+     * в случае нарушений бросает ConverterException с соответствующим сообщением
      */
     private void ifLogicBrokenThrow() {
         if (!isCorrectBracketsOrder()) {
-            throw new RuntimeException("Bracket order error");
+            throw new ConverterException.BracketOrderException();
         }
 
-        String msg = getErrorMessageIfLogicBroken();
-        if (!msg.isEmpty()) {
-            throw new RuntimeException(msg);
-        }
+        throwIfLogicBroken();
     }
 
 
