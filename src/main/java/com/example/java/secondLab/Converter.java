@@ -8,6 +8,13 @@ import java.util.LinkedList;
 import java.util.Deque;
 import java.util.Scanner;
 
+
+/**
+ * Класс конвертер, позволяющее посчитать выражение записанное в строке
+ * @author o_agafon
+ * @version 1.0
+ * @since 1.0
+ */
 public class Converter {
 
     /**Словарь, отвечающий за хранение значений переменных (key - переменная, value - значение)*/
