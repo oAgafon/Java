@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
+/**
+ * Перечисление хранящее традиционные гендеры
+ */
 @RequiredArgsConstructor
 @Getter
 @ToString

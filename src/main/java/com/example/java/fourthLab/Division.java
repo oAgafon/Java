@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Класс хранящий информацию о подразделении
+ */
 @AllArgsConstructor
 @Data
 public class Division {

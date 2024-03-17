@@ -14,6 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
+/**
+ * Класс с методом для чтения информации из csv файла
+ * возвращающий список сотрудников , сформированный на основе файла
+ * @author o_agafon
+ * @version 1.0
+ * @since 1.0
+ */
 @Slf4j
 public class CSVReader {
     public static List<Employee> readCSVFile(String filePath) {

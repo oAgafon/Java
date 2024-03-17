@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Класс хранящий информацию о сотруднике
+ */
 @Data
 @Builder
 @ToString
