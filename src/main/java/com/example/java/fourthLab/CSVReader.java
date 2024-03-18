@@ -50,7 +50,8 @@ public class CSVReader {
                                     .build()
                     );
                 } catch (IllegalStateException isex) {
-                    log.warn("An employee {} with a non-existent gender ({}) was found.", csvRecord.get(1), csvRecord.get(2));
+                    log.warn("An employee {} with a non-existent gender ({}) was found.",
+                            csvRecord.get(1), csvRecord.get(2), isex);
                 }
             }
 
@@ -62,5 +63,4 @@ public class CSVReader {
 
         return employeeList;
     }
-
 }
